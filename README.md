@@ -5,7 +5,9 @@ This project provide example of automation of web testing using selenium and pyt
 ## Getting Started
 
 Get the copy of this example using git:
+```
 git clone https://github.com/hcieslewicz/A1.git
+```
 
 
 ### Prerequisites
@@ -43,4 +45,4 @@ In this projects there are two test:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
