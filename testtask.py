@@ -2,21 +2,24 @@ import unittest
 from selenium import webdriver
 from pages import *
 from testcases import test_cases
+from selenium.webdriver.firefox.options import Options
 
 
 class TestPages(unittest.TestCase):
     def setUp(self):
-        # self.driver = webdriver.Chrome()
-        self.driver = webdriver.Firefox()
+
+        options = Options()
+        #options.add_argument("--headless")
+        self.driver = webdriver.Firefox(firefox_options=options)
         self.driver.maximize_window()
 
         self.driver.get("https://www.autohero.com/de/search/")
         self.driver.implicitly_wait(2)
 
-    def test_a_page_load(self):
-        print "\n" + str(test_cases(0))
-        page = SearchPage(self.driver)
-        self.assertTrue(page.check_page_loaded())
+    #def test_a_page_load(self):
+    #    print "\n" + str(test_cases(0))
+    #    page = SearchPage(self.driver)
+    #    self.assertTrue(page.check_page_loaded())
 
     def test_filter_by_registration_date_and_sort(self):
         print "\n" + str(test_cases(1))
@@ -26,7 +29,11 @@ class TestPages(unittest.TestCase):
         search_page.sort_by_price('descending')
         assert search_page.is_results_found(), "No results found."
 
-        search_page.check_results(filter_year)
+        exp_list = [
+            ('registration_year',  '>=',  '2012'),
+            ('price',  '<=',  'last_value')
+        ]
+        search_page.check_results(exp_list)
 
     def tearDown(self):
         self.driver.close()

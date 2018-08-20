@@ -24,29 +24,53 @@ class SearchPage(Page):
 
         return SearchPage(self.driver)
 
-    def get_registration_year(self):
+    def registration_year(self):
         year_list = self.find_element(*self.locator.SPEC_LIST).find_elements_by_tag_name("li")
 
         return int(year_list[0].text.encode('ascii', 'ignore').decode('ascii').replace('\u2022', '').strip())
 
-    def get_price(self):
+    def price(self):
         return int(self.find_element(*self.locator.PRICE).text.split(' ')[0].replace('.', ''))
 
-    def check_results(self, filter_year):
-        last_price = 0
+    def convert(self, expression):
+        try:
+            return int(expression[2])
+        except:
+            pass
 
+        try:
+            return eval('self.'+expression[2])
+        except:
+            return expression[2]
+
+    def check_results(self, expression_list):
+        self.last_value = None
         while True:
             for result in self.find_elements(*self.locator.SEARCH_RESULTS):
-                registration_year = self.get_registration_year()
-                price = self.get_price()
+                for expression in expression_list:
+                    # expr_arg1 = eval('self.'+ expression[0])
+                    if expression[0] == 'price':
+                        expr_arg1 = self.price()
+                    elif expression[0] == 'registration_year':
+                        expr_arg1 = self.registration_year()
+                    else:
+                        raise AssertionError("Not valid argument for expression")
 
-                assert price > 0, "Car price is 0 or below"
-                if last_price == 0:
-                    last_price = price
+                    expr_arg2 = expression[1]
 
-                assert registration_year >= filter_year, "Filtered result year is below declared"
-                assert price <= last_price, "Descending sorted result price is greater than previous one"
-                last_price = price
+                    if expression[2] == 'last_value':
+                        if self.last_value == None:
+                            if expression[0] == 'price':
+                                self.last_value = self.price()
+                            elif expression[0] == 'registration_year':
+                                self.last_value = self.registration_year()
+
+                    expr_arg3 = self.convert(expression)
+                    condition = eval(str(expr_arg1) + ' ' + expr_arg2 + ' ' + str(expr_arg3))
+                    assert condition, "%s is not %s than %s" % (expr_arg1, expr_arg2, expr_arg3)
+
+                    if expression[2] == 'last_value':
+                        self.last_value = expr_arg1
 
             pagination_list = self.find_element(*self.locator.PAGINATIOM).find_elements_by_tag_name("li")
             next_button = pagination_list[-2].find_element_by_tag_name('a')
@@ -54,9 +78,7 @@ class SearchPage(Page):
                 break
             else:
                 self.open(next_button.get_attribute('href'))
-                # next_button.click()
-                # I prefer calling Get directly instead of Click, cause of no need of using any time.sleep to have page
-                # completely load. This prevents situation when page contains old data, when selenium pase it.
+                #next_button.click()
 
     def is_results_found(self):
         return "No results found." not in self.driver.page_source
