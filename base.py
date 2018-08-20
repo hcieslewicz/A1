@@ -20,7 +20,7 @@ class Page(object):
     def find_elements(self, *locator):
         return WebDriverWait(self.driver, 10).until(ec.presence_of_all_elements_located(locator))
 
-    def find_element_by_tag_name(self, *locator):
+    def find_element_to_be_clickable(self, *locator):
         return WebDriverWait(self.driver, 10).until(ec.element_to_be_clickable(locator))
 
     def update_locator(self, value, *locator):

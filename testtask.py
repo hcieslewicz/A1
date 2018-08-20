@@ -16,10 +16,10 @@ class TestPages(unittest.TestCase):
         self.driver.get("https://www.autohero.com/de/search/")
         self.driver.implicitly_wait(2)
 
-    #def test_a_page_load(self):
-    #    print "\n" + str(test_cases(0))
-    #    page = SearchPage(self.driver)
-    #    self.assertTrue(page.check_page_loaded())
+    def test_a_page_load(self):
+        print "\n" + str(test_cases(0))
+        page = SearchPage(self.driver)
+        self.assertTrue(page.check_page_loaded())
 
     def test_filter_by_registration_date_and_sort(self):
         print "\n" + str(test_cases(1))
