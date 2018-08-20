@@ -1,6 +1,6 @@
 # A1 automation
 
-This project provide example of automation of web testing using selenium and python and Firefox browser.
+This project provide example of automation of web testing using selenium, python and Firefox browser.
 
 ## Getting Started
 
