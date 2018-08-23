@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 
-def test_cases(number):
+def case_description(number):
     return testCases[number]
 
 

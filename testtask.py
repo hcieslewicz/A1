@@ -1,7 +1,7 @@
 import unittest
 from selenium import webdriver
 from pages import *
-from testcases import test_cases
+from descriptions import case_description
 from selenium.webdriver.firefox.options import Options
 
 
@@ -18,12 +18,12 @@ class TestPages(unittest.TestCase):
         self.driver.implicitly_wait(2)
 
     def test_a_page_load(self):
-        print "\n" + str(test_cases(0))
+        print "\n" + str(case_description(0))
         page = SearchPage(self.driver)
         self.assertTrue(page.check_page_loaded())
 
     def test_filter_by_registration_date_and_sort(self):
-        print "\n" + str(test_cases(1))
+        print "\n" + str(case_description(1))
         filter_year = 2015
         search_page = SearchPage(self.driver)
         search_page.filter_by_first_registration(filter_year)
