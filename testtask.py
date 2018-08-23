@@ -9,8 +9,9 @@ class TestPages(unittest.TestCase):
     def setUp(self):
 
         options = Options()
-        #options.add_argument("--headless")
-        self.driver = webdriver.Firefox(firefox_options=options)
+        options.add_argument('-headless')
+        binary_path = "E:\geckodriver\geckodriver-v0.19.1\geckodriver.exe"
+        self.driver = webdriver.Firefox(executable_path=binary_path, firefox_options=options)
         self.driver.maximize_window()
 
         self.driver.get("https://www.autohero.com/de/search/")
